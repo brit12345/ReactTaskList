@@ -1,39 +1,31 @@
 import { ChangeEvent, FormEvent, MouseEvent, useContext, useState } from "react";
-import Task, { Label } from "../data/dataInterfaces";
-import { MyContext } from "./MyContext";
-import CancelButton from "./CancelButton";
-import SaveButton from "./SaveButton";
-import { pages } from "../data/pages";
-import LabelComponent from "./Label";
-import { labelColours } from "../data/labelColours";
+import Task, { Label } from "../../data/dataInterfaces";
+import { MyContext } from "../MyContext";
+import CancelButton from "../buttons/CancelButton";
+import SaveButton from "../buttons/SaveButton";
+import { pages } from "../../data/pages";
+import DeleteButton from "../buttons/DeleteButton";
+import LabelComponent from "../Label";
+import { labelColours } from "../../data/labelColours";
 
-function Add(){
-  const { tasks, setTasks, setCurrentPage } = useContext(MyContext);
+function Edit(){
+  const { tasks, setTasks, detailID, setCurrentPage } = useContext(MyContext);
+
+  const focusTask = tasks.filter(task => task.id === detailID)[0];
   
-  const task = {
-    id: crypto.randomUUID(),
-    title: "",
-    desc: "",
-    completed: false,
-    dueDate: "",
-    priority: "1",
-    label: "",
-    reminder: ""
-  }
+  const [formInputs, setFormInputs] = useState(focusTask);
 
-  const [formInputs, setFormInputs] = useState(task);
+  const [labelInput, setLabelInput] = useState("");
 
-  const [labels, setLabels] = useState<Array<Label>>([]);
+  const [labels, setLabels] = useState<Array<Label>>(focusTask.labels);
 
   const [colour, setColour] = useState("");
-
 
   function handleChange(e: ChangeEvent<HTMLInputElement>, property: string) {
     let tempTask = {
       ...formInputs,
       [property]: e.target.value
     }
-
     setFormInputs(tempTask);
   }
 
@@ -55,17 +47,26 @@ function Add(){
   }
 
   function handleSubmit(e: FormEvent<HTMLFormElement>): void {
-    //to submit, i need to save it to the end of the tasks state
-    const tempTask: Task = {
-      ...formInputs,
-      priority: Number(formInputs.priority),
-      labels: [...labels]
-    };
     e.preventDefault();
-    const taskList: Array<Task> = [...tasks, tempTask]
+
+    const taskList: Array<Task> = tasks.map(task => {
+      if(task.id === formInputs.id){
+        return {
+          ...formInputs,
+          labels: labels
+        };
+      } else {
+        return task;
+      }
+    });
+
     setTasks(taskList);
     setCurrentPage(pages.table);
 
+  }
+
+  function handleLabelChange(e: ChangeEvent<HTMLInputElement>) {
+    setLabelInput(e.target.value);
   }
 
   function handleAddClick(e: MouseEvent<HTMLButtonElement>){
@@ -75,16 +76,12 @@ function Add(){
       ...labels,
       {
         id: crypto.randomUUID(),
-        name: formInputs.label, //set it as whats currently in the input
-        colour: colour 
+        name: labelInput, //set it as whats currently in the input
+        colour: colour
       }
     ]
 
     setLabels(tempLabels);
-  }
-
-  function handleColourChange(e: ChangeEvent<HTMLSelectElement>) {
-    setColour(e.target.value);
   }
 
   function handleLabelDelete(e: MouseEvent<HTMLButtonElement>){
@@ -97,6 +94,10 @@ function Add(){
     });
 
     setLabels(tempLabels);
+  }
+
+  function handleColourChange(e: ChangeEvent<HTMLSelectElement>) {
+    setColour(e.target.value);
   }
 
   function getColourOptions(): Array<React.ReactNode>{
@@ -117,22 +118,22 @@ function Add(){
      
       <div className="fullWidth">
         <label htmlFor="desc">Description</label>
-        <input type="text" className="nextLine" id="desc" onChange={(e: ChangeEvent<HTMLInputElement>) => {handleChange(e, "desc")}}/>
+        <input type="text" className="nextLine" id="desc" value={formInputs.desc} onChange={(e: ChangeEvent<HTMLInputElement>) => {handleChange(e, "desc")}}/>
       </div>
 
       <div className="inputSpacing">
         <label htmlFor="dueDate">Due Date</label>
-        <input type="datetime-local" id="dueDate" onChange={(e: ChangeEvent<HTMLInputElement>) => {handleChange(e, "dueDate")}}/>
+        <input type="datetime-local" id="dueDate" defaultValue={formInputs.dueDate} onChange={(e: ChangeEvent<HTMLInputElement>) => {handleChange(e, "dueDate")}}/>
       </div>
 
       <div className="inputSpacing">
         <label htmlFor="reminder">Reminder</label>
-        <input type="datetime-local" id="reminder" onChange={(e: ChangeEvent<HTMLInputElement>) => {handleChange(e, "reminder")}}/>
+        <input type="datetime-local" id="reminder" defaultValue={formInputs.reminder} onChange={(e: ChangeEvent<HTMLInputElement>) => {handleChange(e, "reminder")}}/>
       </div>
     
       <div className="inputSpacing">
         <label htmlFor="priority">Priority</label>
-        <select id="priority" onChange={(e: ChangeEvent<HTMLSelectElement>) => {handleSelectChange(e, "priority")}}>
+        <select id="priority" value={formInputs.priority} onChange={(e: ChangeEvent<HTMLSelectElement>) => {handleSelectChange(e, "priority")}}>
           <option value="1">Very Low</option>
           <option value="2">Low</option>
           <option value="3">Medium</option>
@@ -143,8 +144,8 @@ function Add(){
 
       <div className="inputSpacing">
         <label>Labels</label>
-        {labels.map(label => <LabelComponent key={label.id} label={label} editMode={true} onClick={handleLabelDelete}></LabelComponent>)}
-        <input type="text" list="labels" value={formInputs.label} onChange={(e: ChangeEvent<HTMLInputElement>) => {handleChange(e, "label")}}></input>
+        {labels.map(label => <LabelComponent key={label.id} label={label} editMode={true}  onClick={handleLabelDelete}></LabelComponent>)}
+        <input type="text" list="labels" value={labelInput} onChange={(e: ChangeEvent<HTMLInputElement>) => {handleLabelChange(e)}}></input>
         <datalist id="labels">
           {getUniqueLabels(tasks).map(label => <option key={label} value={label}>{label}</option> )}
         </datalist>
@@ -157,8 +158,14 @@ function Add(){
         <button className="saveButton addButton" onClick={handleAddClick}>Add</button>
       </div>
 
+      <div>
+        <label htmlFor="completed">Completed</label>
+        <input type="checkbox" id="completed" checked={formInputs.completed} onChange={(e: ChangeEvent<HTMLInputElement>) => {handleChange(e, "completed")}}/>
+      </div>
+
       <div id="formButtons">
         <div>
+          <DeleteButton taskID={detailID} alteredTasks={null} setAlteredTasks={null}></DeleteButton>
         </div>
         <div>
           <CancelButton label="Cancel"></CancelButton>
@@ -170,4 +177,17 @@ function Add(){
   )
 }
 
-export default Add;
+export default Edit;
+
+
+
+/*<input type="text" list="cars" />
+<datalist id="cars">
+  <option>Volvo</option>
+  <option>Saab</option>
+  <option>Mercedes</option>
+  <option>Audi</option>
+</datalist>
+
+also need to add the delete button but only if its in edit?
+*/

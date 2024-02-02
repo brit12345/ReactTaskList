@@ -1,7 +1,7 @@
 import { Dispatch, MouseEvent, SetStateAction, useContext } from "react";
-import { MyContext } from "./MyContext";
-import { pages } from "../data/pages";
-import Task from "../data/dataInterfaces";
+import { MyContext } from "../MyContext";
+import { pages } from "../../data/pages";
+import Task from "../../data/dataInterfaces";
 
 function DeleteButton( { taskID, alteredTasks, setAlteredTasks } : {taskID: string | null, alteredTasks: Array<Task> | null, setAlteredTasks: Dispatch<SetStateAction<Task[]>> | null }){
   const { tasks, setTasks, setCurrentPage } = useContext(MyContext);

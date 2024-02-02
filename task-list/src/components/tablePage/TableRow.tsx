@@ -1,11 +1,11 @@
 import { Dispatch, SetStateAction, useContext } from "react";
-import Task from "../data/dataInterfaces";
-import DeleteButton from "./DeleteButton";
-import LabelComponent from "./Label";
+import Task from "../../data/dataInterfaces";
+import DeleteButton from "../buttons/DeleteButton";
+import LabelComponent from "../Label";
 import Priority from "./Priority";
-import { MyContext } from "./MyContext";
-import { pages } from "../data/pages";
-import EditButton from "./EditButton";
+import { MyContext } from "../MyContext";
+import { pages } from "../../data/pages";
+import EditButton from "../buttons/EditButton";
 
 function TableRow({ task, alteredTasks, setAlteredTasks }: { task: Task, alteredTasks: Array<Task>, setAlteredTasks: Dispatch<SetStateAction<Task[]>> }){
   //need to pass down the page state changing function

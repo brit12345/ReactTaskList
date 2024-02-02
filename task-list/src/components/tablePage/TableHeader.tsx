@@ -1,4 +1,4 @@
-import AddButton from "./AddButton";
+import AddButton from "../buttons/AddButton";
 
 function TableHeader({ onClick }: { onClick: (header: string) => void}){
   return (

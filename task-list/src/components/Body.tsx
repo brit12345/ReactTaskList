@@ -3,12 +3,12 @@
 //enough time to do it myself and wish to demonstrate that I can
 
 import { useContext, useEffect, useState } from "react";
-import Table from "./Table";
-import Detail from "./Detail";
+import Table from "./tablePage/Table";
+import Detail from "./detailPage/Detail";
 import { pages } from "../data/pages";
 import { MyContext } from "./MyContext";
-import Edit from "./Edit";
-import Add from "./Add";
+import Edit from "./addAndEditPages/Edit";
+import Add from "./addAndEditPages/Add";
 
 let overdueAlerted = false; //recommended from https://react.dev/learn/you-might-not-need-an-effect#initializing-the-application
 

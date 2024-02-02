@@ -1,4 +1,4 @@
-import { priorityWords } from "../data/priorityWords";
+import { priorityWords } from "../../data/priorityWords";
 
 function Priority({priority} : { priority: number}){
   let word: string = "Medium";

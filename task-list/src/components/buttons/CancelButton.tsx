@@ -1,6 +1,6 @@
 import { MouseEvent, ReactComponentElement, useContext } from "react";
-import { MyContext } from "./MyContext";
-import { pages } from "../data/pages";
+import { MyContext } from "../MyContext";
+import { pages } from "../../data/pages";
 
 function CancelButton({ label }: { label: string}){
   const { setCurrentPage } = useContext(MyContext);

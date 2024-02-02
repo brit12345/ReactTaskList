@@ -1,6 +1,6 @@
 import { useContext } from "react";
-import { MyContext } from "./MyContext";
-import { pages } from "../data/pages";
+import { MyContext } from "../MyContext";
+import { pages } from "../../data/pages";
 
 
 function AddButton(){

@@ -1,10 +1,10 @@
 import { ChangeEvent, useContext, useState } from "react";
-import { MyContext } from "./MyContext";
-import LabelComponent from "./Label";
-import DeleteButton from "./DeleteButton";
-import CancelButton from "./CancelButton";
-import Task from "../data/dataInterfaces";
-import { priorityWords } from "../data/priorityWords";
+import { MyContext } from "../MyContext";
+import LabelComponent from "../Label";
+import DeleteButton from "../buttons/DeleteButton";
+import CancelButton from "../buttons/CancelButton";
+import Task from "../../data/dataInterfaces";
+import { priorityWords } from "../../data/priorityWords";
 
 function Detail(){
   const { tasks, detailID, setTasks } = useContext(MyContext);

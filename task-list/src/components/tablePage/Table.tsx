@@ -1,9 +1,9 @@
 import { ChangeEvent, useContext, useState } from "react";
 import TableHeader from "./TableHeader";
 import TableRow from "./TableRow";
-import { MyContext } from "./MyContext";
+import { MyContext } from "../MyContext";
 import Popup from "./Popup";
-import Task from "../data/dataInterfaces";
+import Task from "../../data/dataInterfaces";
 
 function Table(){
   const { tasks, setTasks } = useContext(MyContext);
