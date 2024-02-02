@@ -1,7 +1,7 @@
 import { MouseEvent, useContext } from "react";
 import { MyContext } from "./MyContext";
 
-function DeleteButton( { taskID } : {taskID: number }){
+function DeleteButton( { taskID } : {taskID: number | null }){
   const { tasks, setTasks } = useContext(MyContext);
 
   function onClick(e: MouseEvent<HTMLButtonElement>) {

@@ -2,11 +2,12 @@
 //Considered using https://react-tables.com/ for the table, but I have 
 //enough time to do it myself and wish to demonstrate that I can
 
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import Table from "./Table";
 import Detail from "./Detail";
 import { pages } from "../data/pages";
 import { MyContext } from "./MyContext";
+import Edit from "./Edit";
 
 function Body(){
   const { currentPage } = useContext(MyContext);
@@ -15,6 +16,7 @@ function Body(){
     <>
       {currentPage === pages.table && <Table></Table>}
       {currentPage === pages.detail && <Detail></Detail>}
+      {currentPage === pages.edit && <Edit></Edit>}
     </>
 
   )

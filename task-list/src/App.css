@@ -91,3 +91,26 @@ button {
 button:hover {
   cursor: pointer;
 }
+
+/* form styling */
+
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items:flex-start;
+  align-items: stretch;
+
+  width: 60%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+form div {
+  text-align: start;
+}
+
+form .nextLine {
+  width: 100%;
+}
+
