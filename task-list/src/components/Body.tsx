@@ -5,16 +5,27 @@
 import { useState } from "react";
 import Task from "../data/dataInterfaces";
 import Table from "./Table";
+import Detail from "./Detail";
 
 function Body({ tasks }: { tasks: Array<Task>}){
-  const pages: Array<string> = ["table", "detail", "edit"];
+  const pages = { //using properties to set the strings instead of just writing strings will prevent typing errors
+    table: "table",
+    detail: "detail",
+    edit: "edit"
+  };
 
-  const [currentPage, setCurrentPage] = useState("table");
+  const [currentPage, setCurrentPage] = useState(pages.table);
+
+  function changeToDetail(taskID: number): void {
+
+    setCurrentPage(pages.detail);
+  }
 
   //Display correct page depending on what the state is
   return (
     <>
-      {currentPage === "table" && <Table tasks={tasks}></Table>}
+      {currentPage === pages.table && <Table tasks={tasks} changeToDetail={changeToDetail}></Table>}
+      {currentPage === pages.detail && <Detail></Detail>}
     </>
 
   )

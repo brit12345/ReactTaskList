@@ -2,9 +2,10 @@ import Task from "../data/dataInterfaces";
 import LabelComponent from "./Label";
 import Priority from "./Priority";
 
-function TableRow({ task }: { task: Task}){
+function TableRow({ task, changeToDetail }: { task: Task, changeToDetail: (taskID: number) => void}){
+  //need to pass down the page state changing function
   return (
-    <tr>
+    <tr onClick={() => changeToDetail(task.id)}>
       <td>
         {task.completed && <img src="checkmark-circle-outline.svg" style={{width: 20, height: 20}}/>}
       </td>

@@ -2,7 +2,7 @@ import Task from "../data/dataInterfaces";
 import TableHeader from "./TableHeader";
 import TableRow from "./TableRow";
 
-function Table({ tasks } : { tasks: Array<Task>}){
+function Table({ tasks, changeToDetail } : { tasks: Array<Task>, changeToDetail: (taskID: number) => void}){
   return (
     <table>
       <thead>
@@ -11,7 +11,7 @@ function Table({ tasks } : { tasks: Array<Task>}){
       <tbody>
         {tasks.map(task => {
           return (
-            <TableRow task={task} key={task.id}></TableRow>
+            <TableRow task={task} key={task.id} changeToDetail={changeToDetail}></TableRow>
           );
         })}
       </tbody>
