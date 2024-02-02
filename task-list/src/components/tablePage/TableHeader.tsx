@@ -3,8 +3,8 @@ import AddButton from "../buttons/AddButton";
 function TableHeader({ onClick }: { onClick: (header: string) => void}){
   return (
     <tr>
-      <th style={{width: "2%"}} onClick={() => onClick("status")}>
-        Status
+      <th style={{width: "5%"}} onClick={() => onClick("status")}>
+        Status &lt;&gt;
       </th>
       <th style={{width: "20%"}}>
         Title
@@ -13,13 +13,13 @@ function TableHeader({ onClick }: { onClick: (header: string) => void}){
         Description
       </th>
       <th style={{width: "10%"}} onClick={() => onClick("dueDate")}>
-        Due Date
+        Due Date &lt;&gt;
       </th>
       <th style={{width: "10%"}} onClick={() => onClick("priority")}>
-        Priority
+        Priority &lt;&gt;
       </th>
       <th style={{width: "15%"}} onClick={() => onClick("labels")}>
-        Labels
+        Labels &lt;&gt;
       </th>
       <th style={{width: "5%"}}>
         <AddButton></AddButton>
