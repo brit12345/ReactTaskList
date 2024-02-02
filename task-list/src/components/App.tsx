@@ -18,6 +18,7 @@ function App() {
   const [tasks, setTasks] = useState(tempTasks);
   const [currentPage, setCurrentPage] = useState(pages.table);
   const [detailID, setDetailID] = useState<string | null>(null);
+  
 
   //saves the tasks after the component finishes updating
   useEffect(() => {

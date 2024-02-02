@@ -11,6 +11,8 @@ import Edit from "./Edit";
 import Add from "./Add";
 import Alert from "./Alert";
 
+let overdueAlerted = false; //recommended from https://react.dev/learn/you-might-not-need-an-effect#initializing-the-application
+
 function Body(){
   const { currentPage } = useContext(MyContext);
   
@@ -19,10 +21,7 @@ function Body(){
   const [currTime, setCurrTime] = useState(new Date());
 
   const { tasks } = useContext(MyContext);
-  //here is where we need to figure out if an alert is on
-  //and then when we turn it on, pass the correct stuff
-  //ok so for each due date, we need to alert the day before
-  //and then for each reminder, we alert at that time
+
   tasks.map(task => {
     if(new Date(task.reminder + "+10:00").getTime() === new Date().setMilliseconds(0)){ //time for reminder, make sure it knows it's aus timezone
       alert("'" + task.title + "'" + " reminder!");
@@ -31,6 +30,17 @@ function Body(){
       alert("'" + task.title + "'" + " is due in 15 minutes!");
     } 
   });
+
+  useEffect(() => {
+    if(!overdueAlerted){
+      overdueAlerted = true;
+      tasks.map(task => {
+        if(new Date(task.dueDate + "+10:00").getTime() > new Date().setMilliseconds(0)){ //if past current time
+          alert("'" + task.title + "'" + " is overdue!");
+        } 
+      })
+    }
+  }, [])
 
   useEffect(() => { //updates the time every second
     const interval = setInterval(() => { setCurrTime(new Date()) }, 1000);
