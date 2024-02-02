@@ -2,27 +2,21 @@
 //Considered using https://react-tables.com/ for the table, but I have 
 //enough time to do it myself and wish to demonstrate that I can
 
+import { useState } from "react";
 import Task from "../data/dataInterfaces";
-import TableHeader from "./TableHeader";
-import TableRow from "./TableRow";
+import Table from "./Table";
 
 function Body({ tasks }: { tasks: Array<Task>}){
-  
+  const pages: Array<string> = ["table", "detail", "edit"];
 
-  //ok im thinking that i do the whole table here and then split it up. mostly because i cant remember how tables work
+  const [currentPage, setCurrentPage] = useState("table");
+
+  //Display correct page depending on what the state is
   return (
-    <table>
-      <thead>
-        <TableHeader></TableHeader>
-      </thead>
-      <tbody>
-        {tasks.map(task => {
-          return (
-            <TableRow task={task} key={task.id}></TableRow>
-          );
-        })}
-      </tbody>
-    </table>
+    <>
+      {currentPage === "table" && <Table tasks={tasks}></Table>}
+    </>
+
   )
 }
 
