@@ -27,6 +27,9 @@ function Body(){
     if(new Date(task.reminder + "+10:00").getTime() === new Date().setMilliseconds(0)){ //time for reminder, make sure it knows it's aus timezone
       alert("'" + task.title + "'" + " reminder!");
     }
+    if(new Date(task.dueDate + "+10:00").getTime() - new Date().setMilliseconds(0) === 15*60000){ //if 15 minutes before
+      alert("'" + task.title + "'" + " is due in 15 minutes!");
+    } 
   });
 
   useEffect(() => { //updates the time every second
