@@ -2,6 +2,7 @@ import { ChangeEvent, useContext, useState } from "react";
 import Task from "../data/dataInterfaces";
 import { MyContext } from "./MyContext";
 import DeleteButton from "./DeleteButton";
+import CancelButton from "./CancelButton";
 
 function Edit(){
   const { tasks, setTasks, detailID } = useContext(MyContext);
@@ -85,7 +86,7 @@ function Edit(){
           {editMode && <DeleteButton taskID={detailID}></DeleteButton>}
         </div>
         <div>
-          <button>cancel</button>
+          <CancelButton></CancelButton>
           <button>save</button>
         </div>
       </div>

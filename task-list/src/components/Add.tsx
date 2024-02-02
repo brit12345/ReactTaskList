@@ -2,6 +2,7 @@ import { ChangeEvent, useContext, useState } from "react";
 import Task from "../data/dataInterfaces";
 import { MyContext } from "./MyContext";
 import { randomUUID } from "crypto";
+import CancelButton from "./CancelButton";
 
 function Add(){
   const { tasks, setTasks, detailID } = useContext(MyContext);
@@ -87,7 +88,7 @@ function Add(){
         <div>
         </div>
         <div>
-          <button>cancel</button>
+          <CancelButton></CancelButton>
           <button>save</button>
         </div>
       </div>
