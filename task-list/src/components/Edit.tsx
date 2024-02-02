@@ -110,7 +110,7 @@ function Edit(){
           <DeleteButton taskID={detailID}></DeleteButton>
         </div>
         <div>
-          <CancelButton></CancelButton>
+          <CancelButton label="Cancel"></CancelButton>
           <SaveButton></SaveButton>
         </div>
       </div>

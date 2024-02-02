@@ -1,15 +1,15 @@
-import { MouseEvent, useContext } from "react";
+import { MouseEvent, ReactComponentElement, useContext } from "react";
 import { MyContext } from "./MyContext";
 import { pages } from "../data/pages";
 
-function CancelButton(){
+function CancelButton({ label }: { label: string}){
   const { setCurrentPage } = useContext(MyContext);
 
   function handleClick(e: MouseEvent<HTMLButtonElement>): void {
     e.preventDefault();
     setCurrentPage(pages.table);
   }
-  return <button onClick={handleClick} className="cancelButton">Cancel</button>;
+  return <button onClick={handleClick} className="cancelButton">{label}</button>;
 }
 
 export default CancelButton;

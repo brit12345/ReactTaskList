@@ -109,7 +109,7 @@ function Add(){
         <div>
         </div>
         <div>
-          <CancelButton></CancelButton>
+          <CancelButton label="Cancel"></CancelButton>
           <SaveButton></SaveButton>
         </div>
       </div>
