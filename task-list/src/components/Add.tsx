@@ -1,9 +1,10 @@
 import { ChangeEvent, FormEvent, MouseEvent, useContext, useState } from "react";
-import Task from "../data/dataInterfaces";
+import Task, { Label } from "../data/dataInterfaces";
 import { MyContext } from "./MyContext";
 import CancelButton from "./CancelButton";
 import SaveButton from "./SaveButton";
 import { pages } from "../data/pages";
+import LabelComponent from "./Label";
 
 function Add(){
   const { tasks, setTasks, setCurrentPage } = useContext(MyContext);
@@ -15,13 +16,13 @@ function Add(){
     completed: false,
     dueDate: "",
     priority: "1",
-    labels: "",
+    label: "",
     reminder: ""
   }
 
   const [formInputs, setFormInputs] = useState(task);
 
-
+  const [labels, setLabels] = useState<Array<Label>>([]); //array of objects
 
 
   function handleChange(e: ChangeEvent<HTMLInputElement>, property: string) {
@@ -55,11 +56,7 @@ function Add(){
     const tempTask: Task = {
       ...formInputs,
       priority: Number(formInputs.priority),
-      labels: [{
-        id: crypto.randomUUID(),
-        name: formInputs.labels,
-        colour: "red"
-      }]
+      labels: [...labels]
     };
     e.preventDefault();
     const taskList: Array<Task> = [...tasks, tempTask]
@@ -69,8 +66,19 @@ function Add(){
   }
 
   function handleAddClick(e: MouseEvent<HTMLButtonElement>){
-    console.log("clicking")
     e.preventDefault();
+
+    let tempLabels = [
+      ...labels,
+      {
+        id: crypto.randomUUID(),
+        name: formInputs.label, //set it as whats currently in the input
+        colour: "red" //RED FOR NOW
+      }
+    ]
+    //somehow have to also get the colour
+
+    setLabels(tempLabels);
   }
 
   return (
@@ -107,8 +115,9 @@ function Add(){
       </div>
 
       <div className="inputSpacing">
-        <label>Label</label>
-        <input type="text" list="labels" value={formInputs.labels} onChange={(e: ChangeEvent<HTMLInputElement>) => {handleChange(e, "labels")}}></input>
+        <label>Labels</label>
+        {labels.map(label => <LabelComponent label={label}></LabelComponent>)}
+        <input type="text" list="labels" value={formInputs.label} onChange={(e: ChangeEvent<HTMLInputElement>) => {handleChange(e, "label")}}></input>
         <datalist id="labels">
           {getUniqueLabels(tasks).map(label => <option key={label} value={label}>{label}</option> )}
         </datalist>
@@ -129,14 +138,3 @@ function Add(){
 }
 
 export default Add;
-
-/*<input type="text" list="cars" />
-<datalist id="cars">
-  <option>Volvo</option>
-  <option>Saab</option>
-  <option>Mercedes</option>
-  <option>Audi</option>
-</datalist>
-
-also need to add the delete button but only if its in edit?
-*/
