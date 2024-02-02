@@ -80,7 +80,6 @@ function Edit(){
         colour: colour
       }
     ]
-    //somehow have to also get the colour
 
     setLabels(tempLabels);
   }

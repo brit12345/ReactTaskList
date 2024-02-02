@@ -37,50 +37,52 @@ function Detail(){
   }
   
   return (
-    <div>
-      <div className="fullWidth">
-        <h3>Title</h3>
+    <div id="detailView">
+      <div className="fullWidth aboveText">
+        <h3 id="detailTitle">Title</h3>
         <p>{focusTask.title}</p>
       </div>
      
-      <div className="fullWidth">
+      <div className="fullWidth aboveText">
         <h3>Description</h3>
         <p>{focusTask.desc}</p>
       </div>
 
-      <div className="fullWidth">
-        <h3>Due Date</h3>
+      <div className="sameLine">
+        <h3 id="dueDateLabel">Due Date:</h3>
         <p>{(new Date(focusTask.dueDate)).toLocaleString('en-AU', {hour12: true, dateStyle: "short", timeStyle: "short"})}</p>
       </div>
 
-      <div className="fullWidth">
-        <h3>Reminder</h3>
+      <div className="sameLine">
+        <h3>Reminder:</h3>
         <p>{(new Date(focusTask.reminder)).toLocaleString('en-AU', {hour12: true, dateStyle: "short", timeStyle: "short"})}</p>
       </div>
 
-      <div className="fullWidth">
-        <h3>Priority</h3>
+      <div className="sameLine">
+        <h3>Priority:</h3>
         <p>{word}</p>
       </div>
 
       <div>
         <h3>Labels</h3>
-        {focusTask.labels.map(label => {
-        return (
-          <LabelComponent label={label} key={label.id} editMode={false}  onClick={undefined}></LabelComponent>
-        )
-      })}</div>
+        <div id="labels">
+          {focusTask.labels.map(label => {
+          return (
+            <LabelComponent label={label} key={label.id} editMode={false}  onClick={undefined}></LabelComponent>
+          )})}
+        </div>
+      </div>
 
-      <div>
+      <div className="center">
         <label htmlFor="completed">Completed</label>
         <input type="checkbox" id="completed" checked={focusTask.completed} onChange={(e: ChangeEvent<HTMLInputElement>) => {handleCheckboxChange(e)}}/>
       </div>
 
       <div id="formButtons">
-        <div>
+        <div id="deleteButton">
           <DeleteButton taskID={detailID} alteredTasks={null} setAlteredTasks={null}></DeleteButton>
         </div>
-        <div>
+        <div className="cancelDetail">
           <CancelButton label="Back"></CancelButton>
         </div>
       </div>

@@ -79,7 +79,6 @@ function Add(){
         colour: colour 
       }
     ]
-    //somehow have to also get the colour
 
     setLabels(tempLabels);
   }
