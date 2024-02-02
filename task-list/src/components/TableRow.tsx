@@ -5,6 +5,7 @@ import LabelComponent from "./Label";
 import Priority from "./Priority";
 import { MyContext } from "./MyContext";
 import { pages } from "../data/pages";
+import EditButton from "./EditButton";
 
 function TableRow({ task }: { task: Task }){
   //need to pass down the page state changing function
@@ -32,9 +33,7 @@ function TableRow({ task }: { task: Task }){
       <td>
         <div className="buttons">
           <DeleteButton taskID={task.id}></DeleteButton>
-          <button>
-            <img src="create.svg" alt="edit" style={{width: 20, height: 20}}/>
-          </button>
+          <EditButton taskID={task.id}></EditButton>
         </div>
       </td>
     </tr>
