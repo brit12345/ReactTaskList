@@ -136,3 +136,7 @@ form .inputSpacing label{
 .cancelButton {
   font-size: 1em;
 }
+
+.addButton {
+  font-size: 0.8em;
+}

@@ -9,14 +9,11 @@ import { pages } from "../data/pages";
 import { MyContext } from "./MyContext";
 import Edit from "./Edit";
 import Add from "./Add";
-import Alert from "./Alert";
 
 let overdueAlerted = false; //recommended from https://react.dev/learn/you-might-not-need-an-effect#initializing-the-application
 
 function Body(){
   const { currentPage } = useContext(MyContext);
-  
-  const [reminderAlert, setReminderAlert] = useState(false);
 
   const [currTime, setCurrTime] = useState(new Date());
 
@@ -35,12 +32,12 @@ function Body(){
     if(!overdueAlerted){
       overdueAlerted = true;
       tasks.map(task => {
-        if(new Date(task.dueDate + "+10:00").getTime() > new Date().setMilliseconds(0)){ //if past current time
+        if(new Date().setMilliseconds(0) > new Date(task.dueDate + "+10:00").getTime()){ //if past current time
           alert("'" + task.title + "'" + " is overdue!");
         } 
       })
     }
-  }, [])
+  }, []);
 
   useEffect(() => { //updates the time every second
     const interval = setInterval(() => { setCurrTime(new Date()) }, 1000);

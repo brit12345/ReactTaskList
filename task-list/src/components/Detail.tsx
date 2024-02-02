@@ -78,7 +78,7 @@ function Detail(){
 
       <div id="formButtons">
         <div>
-          <DeleteButton taskID={detailID}></DeleteButton>
+          <DeleteButton taskID={detailID} alteredTasks={null} setAlteredTasks={null}></DeleteButton>
         </div>
         <div>
           <CancelButton label="Back"></CancelButton>

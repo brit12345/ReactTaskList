@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { Dispatch, SetStateAction, useContext } from "react";
 import Task from "../data/dataInterfaces";
 import DeleteButton from "./DeleteButton";
 import LabelComponent from "./Label";
@@ -7,7 +7,7 @@ import { MyContext } from "./MyContext";
 import { pages } from "../data/pages";
 import EditButton from "./EditButton";
 
-function TableRow({ task }: { task: Task }){
+function TableRow({ task, alteredTasks, setAlteredTasks }: { task: Task, alteredTasks: Array<Task>, setAlteredTasks: Dispatch<SetStateAction<Task[]>> }){
   //need to pass down the page state changing function
   const { setTasks, currentPage, setCurrentPage, setDetailID } = useContext(MyContext);
 
@@ -32,7 +32,7 @@ function TableRow({ task }: { task: Task }){
       })}</td>
       <td>
         <div className="buttons">
-          <DeleteButton taskID={task.id}></DeleteButton>
+          <DeleteButton taskID={task.id} alteredTasks={alteredTasks} setAlteredTasks={setAlteredTasks}></DeleteButton>
           <EditButton taskID={task.id}></EditButton>
         </div>
       </td>

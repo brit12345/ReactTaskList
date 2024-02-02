@@ -1,8 +1,9 @@
-import { MouseEvent, useContext } from "react";
+import { Dispatch, MouseEvent, SetStateAction, useContext } from "react";
 import { MyContext } from "./MyContext";
 import { pages } from "../data/pages";
+import Task from "../data/dataInterfaces";
 
-function DeleteButton( { taskID } : {taskID: string | null }){
+function DeleteButton( { taskID, alteredTasks, setAlteredTasks } : {taskID: string | null, alteredTasks: Array<Task> | null, setAlteredTasks: Dispatch<SetStateAction<Task[]>> | null }){
   const { tasks, setTasks, setCurrentPage } = useContext(MyContext);
 
   function onClick(e: MouseEvent<HTMLButtonElement>) {
@@ -14,6 +15,16 @@ function DeleteButton( { taskID } : {taskID: string | null }){
     e.stopPropagation(); //Prevents table row from registering being clicked
     setTasks(excluded);
     setCurrentPage(pages.table);
+
+    //repeating for altered makes sure the page updates, and lets users delete without changing their filters
+    if(setAlteredTasks !== null && alteredTasks !== null){
+      alteredTasks.filter(task => {
+        if(task.id !== taskID){ //only keep the tasks that don't match the deletion ID
+          return task;
+        }
+      });
+      setAlteredTasks(excluded);
+    }
   }
 
   return (

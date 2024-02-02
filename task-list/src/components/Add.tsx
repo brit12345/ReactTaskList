@@ -1,13 +1,12 @@
-import { ChangeEvent, FormEvent, useContext, useState } from "react";
+import { ChangeEvent, FormEvent, MouseEvent, useContext, useState } from "react";
 import Task from "../data/dataInterfaces";
 import { MyContext } from "./MyContext";
-import { randomUUID } from "crypto";
 import CancelButton from "./CancelButton";
 import SaveButton from "./SaveButton";
 import { pages } from "../data/pages";
 
 function Add(){
-  const { tasks, setTasks, detailID, setCurrentPage } = useContext(MyContext);
+  const { tasks, setTasks, setCurrentPage } = useContext(MyContext);
   
   const task = {
     id: crypto.randomUUID(),
@@ -21,6 +20,8 @@ function Add(){
   }
 
   const [formInputs, setFormInputs] = useState(task);
+
+
 
 
   function handleChange(e: ChangeEvent<HTMLInputElement>, property: string) {
@@ -51,7 +52,6 @@ function Add(){
 
   function handleSubmit(e: FormEvent<HTMLFormElement>): void {
     //to submit, i need to save it to the end of the tasks state
-    console.log(formInputs);
     const tempTask: Task = {
       ...formInputs,
       priority: Number(formInputs.priority),
@@ -61,12 +61,16 @@ function Add(){
         colour: "red"
       }]
     };
-    console.log(tempTask);
     e.preventDefault();
     const taskList: Array<Task> = [...tasks, tempTask]
     setTasks(taskList);
     setCurrentPage(pages.table);
 
+  }
+
+  function handleAddClick(e: MouseEvent<HTMLButtonElement>){
+    console.log("clicking")
+    e.preventDefault();
   }
 
   return (
@@ -108,6 +112,7 @@ function Add(){
         <datalist id="labels">
           {getUniqueLabels(tasks).map(label => <option key={label} value={label}>{label}</option> )}
         </datalist>
+        <button className="saveButton addButton" onClick={handleAddClick}>Add</button>
       </div>
 
       <div id="formButtons">

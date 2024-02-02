@@ -147,7 +147,7 @@ function Table(){
         <tbody>
           {alteredTasks.map(task => {
             return (
-              <TableRow task={task} key={task.id}></TableRow>
+              <TableRow task={task} key={task.id} alteredTasks={alteredTasks} setAlteredTasks={setAlteredTasks}></TableRow>
             );
           })}
         </tbody>
