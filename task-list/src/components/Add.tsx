@@ -1,20 +1,22 @@
-import { ChangeEvent, useContext, useState } from "react";
+import { ChangeEvent, FormEvent, useContext, useState } from "react";
 import Task from "../data/dataInterfaces";
 import { MyContext } from "./MyContext";
 import { randomUUID } from "crypto";
 import CancelButton from "./CancelButton";
+import SaveButton from "./SaveButton";
+import { pages } from "../data/pages";
 
 function Add(){
-  const { tasks, setTasks, detailID } = useContext(MyContext);
-  const editMode = detailID !== null ? true : false;
+  const { tasks, setTasks, detailID, setCurrentPage } = useContext(MyContext);
+  
   const task = {
     id: crypto.randomUUID(),
     title: "",
     desc: "",
     completed: false,
     dueDate: "",
-    priority: "",
-    labels: [],
+    priority: "1",
+    labels: "",
     reminder: ""
   }
 
@@ -23,19 +25,18 @@ function Add(){
 
   function handleChange(e: ChangeEvent<HTMLInputElement>, property: string) {
     let tempTask = {
-      ...task,
+      ...formInputs,
       [property]: e.target.value
     }
-    console.log(e.target.value);
+
     setFormInputs(tempTask);
   }
 
   function handleSelectChange(e: ChangeEvent<HTMLSelectElement>, property: string) {
     let tempTask = {
-      ...task,
+      ...formInputs,
       [property]: e.target.value
     }
-    console.log(e.target.value);
     setFormInputs(tempTask);
   }
 
@@ -48,26 +49,46 @@ function Add(){
     return [...new Set(labels)];
   }
 
+  function handleSubmit(e: FormEvent<HTMLFormElement>): void {
+    //to submit, i need to save it to the end of the tasks state
+    console.log(formInputs);
+    const tempTask: Task = {
+      ...formInputs,
+      priority: Number(formInputs.priority),
+      labels: [{
+        id: crypto.randomUUID(),
+        name: formInputs.labels,
+        colour: "red"
+      }]
+    };
+    console.log(tempTask);
+    e.preventDefault();
+    const taskList: Array<Task> = [...tasks, tempTask]
+    setTasks(taskList);
+    setCurrentPage(pages.table);
+
+  }
+
   return (
-    <form>
+    <form onSubmit={handleSubmit}>
       <div className="fullWidth">
         <label htmlFor="title">Title</label>
-        <input type="text" className="nextLine" id="title" onChange={(e: ChangeEvent<HTMLInputElement>) => {handleChange(e, "title")}}/>
+        <input type="text" className="nextLine" id="title" value={formInputs.title} onChange={(e: ChangeEvent<HTMLInputElement>) => {handleChange(e, "title")}}/>
       </div>
      
       <div className="fullWidth">
         <label htmlFor="desc">Description</label>
-        <input type="text" className="nextLine" id="desc" onChange={(e: ChangeEvent<HTMLInputElement>) => {handleChange(e, "title")}}/>
+        <input type="text" className="nextLine" id="desc" onChange={(e: ChangeEvent<HTMLInputElement>) => {handleChange(e, "desc")}}/>
       </div>
 
       <div className="inputSpacing">
         <label htmlFor="dueDate">Due Date</label>
-        <input type="datetime-local" id="dueDate" onChange={(e: ChangeEvent<HTMLInputElement>) => {handleChange(e, "title")}}/>
+        <input type="datetime-local" id="dueDate" onChange={(e: ChangeEvent<HTMLInputElement>) => {handleChange(e, "dueDate")}}/>
       </div>
     
       <div className="inputSpacing">
         <label htmlFor="priority">Priority</label>
-        <select id="priority" onChange={(e: ChangeEvent<HTMLSelectElement>) => {handleSelectChange(e, "title")}}>
+        <select id="priority" onChange={(e: ChangeEvent<HTMLSelectElement>) => {handleSelectChange(e, "priority")}}>
           <option value="1">Very Low</option>
           <option value="2">Low</option>
           <option value="3">Medium</option>
@@ -78,9 +99,9 @@ function Add(){
 
       <div className="inputSpacing">
         <label>Label</label>
-        <input type="text" list="labels" onChange={(e: ChangeEvent<HTMLInputElement>) => {handleChange(e, "title")}}></input>
+        <input type="text" list="labels" value={formInputs.labels} onChange={(e: ChangeEvent<HTMLInputElement>) => {handleChange(e, "labels")}}></input>
         <datalist id="labels">
-          {getUniqueLabels(tasks).map(label => <option key={label}>{label}</option> )}
+          {getUniqueLabels(tasks).map(label => <option key={label} value={label}>{label}</option> )}
         </datalist>
       </div>
 
@@ -89,7 +110,7 @@ function Add(){
         </div>
         <div>
           <CancelButton></CancelButton>
-          <button>save</button>
+          <SaveButton></SaveButton>
         </div>
       </div>
       

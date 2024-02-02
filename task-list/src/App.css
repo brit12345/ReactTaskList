@@ -123,3 +123,16 @@ form .nextLine {
 form .inputSpacing label{
   display: block;
 }
+
+.saveButton {
+  border: solid 1px grey;
+  border-radius: 8px;
+  padding: 8px 20px;
+  color: white;
+  background-color: #4800a5;
+  margin-left: 25px;
+  font-size: 1em;
+}
+.cancelButton {
+  font-size: 1em;
+}

@@ -9,7 +9,7 @@ function CancelButton(){
     e.preventDefault();
     setCurrentPage(pages.table);
   }
-  return <button onClick={handleClick}>Cancel</button>;
+  return <button onClick={handleClick} className="cancelButton">Cancel</button>;
 }
 
 export default CancelButton;
