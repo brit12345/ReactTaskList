@@ -54,6 +54,11 @@ function Detail(){
       </div>
 
       <div className="fullWidth">
+        <h3>Reminder</h3>
+        <p>{(new Date(focusTask.reminder)).toLocaleString('en-AU', {hour12: true, dateStyle: "short", timeStyle: "short"})}</p>
+      </div>
+
+      <div className="fullWidth">
         <h3>Priority</h3>
         <p>{word}</p>
       </div>

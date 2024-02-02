@@ -80,6 +80,11 @@ function Edit(){
         <label htmlFor="dueDate">Due Date</label>
         <input type="datetime-local" id="dueDate" defaultValue={formInputs.dueDate} onChange={(e: ChangeEvent<HTMLInputElement>) => {handleChange(e, "dueDate")}}/>
       </div>
+
+      <div className="inputSpacing">
+        <label htmlFor="reminder">Reminder</label>
+        <input type="datetime-local" id="reminder" defaultValue={formInputs.reminder} onChange={(e: ChangeEvent<HTMLInputElement>) => {handleChange(e, "reminder")}}/>
+      </div>
     
       <div className="inputSpacing">
         <label htmlFor="priority">Priority</label>
