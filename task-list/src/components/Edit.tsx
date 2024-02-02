@@ -22,6 +22,14 @@ function Edit(){
     setFormInputs(tempTask);
   }
 
+  function handleCheckboxChange(e: ChangeEvent<HTMLInputElement>, property: string) {
+    let tempTask = {
+      ...formInputs,
+      [property]: e.target.checked
+    }
+    setFormInputs(tempTask);
+  }
+
   function handleSelectChange(e: ChangeEvent<HTMLSelectElement>, property: string) {
     let tempTask = {
       ...formInputs,
@@ -91,6 +99,11 @@ function Edit(){
           {getUniqueLabels(tasks).map(label => <option key={label} value={label}>{label}</option> )}
         </datalist>
       </div> */}
+
+      <div>
+        <label htmlFor="completed">Completed</label>
+        <input type="checkbox" id="completed" checked={formInputs.completed} onChange={(e: ChangeEvent<HTMLInputElement>) => {handleCheckboxChange(e, "completed")}}/>
+      </div>
 
       <div id="formButtons">
         <div>
