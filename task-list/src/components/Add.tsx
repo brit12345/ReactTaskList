@@ -22,7 +22,7 @@ function Add(){
 
   const [formInputs, setFormInputs] = useState(task);
 
-  const [labels, setLabels] = useState<Array<Label>>([]); //array of objects
+  const [labels, setLabels] = useState<Array<Label>>([]);
 
 
   function handleChange(e: ChangeEvent<HTMLInputElement>, property: string) {

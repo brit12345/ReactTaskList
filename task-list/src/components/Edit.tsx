@@ -1,10 +1,11 @@
-import { ChangeEvent, FormEvent, useContext, useState } from "react";
-import Task from "../data/dataInterfaces";
+import { ChangeEvent, FormEvent, MouseEvent, useContext, useState } from "react";
+import Task, { Label } from "../data/dataInterfaces";
 import { MyContext } from "./MyContext";
 import CancelButton from "./CancelButton";
 import SaveButton from "./SaveButton";
 import { pages } from "../data/pages";
 import DeleteButton from "./DeleteButton";
+import LabelComponent from "./Label";
 
 function Edit(){
   const { tasks, setTasks, detailID, setCurrentPage } = useContext(MyContext);
@@ -13,19 +14,14 @@ function Edit(){
   
   const [formInputs, setFormInputs] = useState(focusTask);
 
+  const [labelInput, setLabelInput] = useState("");
+
+  const [labels, setLabels] = useState<Array<Label>>([]);
 
   function handleChange(e: ChangeEvent<HTMLInputElement>, property: string) {
     let tempTask = {
       ...formInputs,
       [property]: e.target.value
-    }
-    setFormInputs(tempTask);
-  }
-
-  function handleCheckboxChange(e: ChangeEvent<HTMLInputElement>, property: string) {
-    let tempTask = {
-      ...formInputs,
-      [property]: e.target.checked
     }
     setFormInputs(tempTask);
   }
@@ -48,12 +44,14 @@ function Edit(){
   }
 
   function handleSubmit(e: FormEvent<HTMLFormElement>): void {
-    //to submit, i need to save it to the end of the tasks state
     e.preventDefault();
 
     const taskList: Array<Task> = tasks.map(task => {
       if(task.id === formInputs.id){
-        return formInputs;
+        return {
+          ...formInputs,
+          labels: labels
+        };
       } else {
         return task;
       }
@@ -62,6 +60,26 @@ function Edit(){
     setTasks(taskList);
     setCurrentPage(pages.table);
 
+  }
+
+  function handleLabelChange(e: ChangeEvent<HTMLInputElement>) {
+    setLabelInput(e.target.value);
+  }
+
+  function handleAddClick(e: MouseEvent<HTMLButtonElement>){
+    e.preventDefault();
+
+    let tempLabels = [
+      ...labels,
+      {
+        id: crypto.randomUUID(),
+        name: labelInput, //set it as whats currently in the input
+        colour: "red" //RED FOR NOW
+      }
+    ]
+    //somehow have to also get the colour
+
+    setLabels(tempLabels);
   }
 
   return (
@@ -97,17 +115,19 @@ function Edit(){
         </select>
       </div>
 
-      {/* <div className="inputSpacing">
-        <label>Label</label>
-        <input type="text" list="labels" value={formInputs.labels} onChange={(e: ChangeEvent<HTMLInputElement>) => {handleChange(e, "labels")}}></input>
+      <div className="inputSpacing">
+        <label>Labels</label>
+        {labels.map(label => <LabelComponent label={label}></LabelComponent>)}
+        <input type="text" list="labels" value={labelInput} onChange={(e: ChangeEvent<HTMLInputElement>) => {handleLabelChange(e)}}></input>
         <datalist id="labels">
           {getUniqueLabels(tasks).map(label => <option key={label} value={label}>{label}</option> )}
         </datalist>
-      </div> */}
+        <button className="saveButton addButton" onClick={handleAddClick}>Add</button>
+      </div>
 
       <div>
         <label htmlFor="completed">Completed</label>
-        <input type="checkbox" id="completed" checked={formInputs.completed} onChange={(e: ChangeEvent<HTMLInputElement>) => {handleCheckboxChange(e, "completed")}}/>
+        <input type="checkbox" id="completed" checked={formInputs.completed} onChange={(e: ChangeEvent<HTMLInputElement>) => {handleChange(e, "completed")}}/>
       </div>
 
       <div id="formButtons">
