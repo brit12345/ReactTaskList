@@ -1,9 +1,9 @@
 import AddButton from "./AddButton";
 
-function TableHeader(){
+function TableHeader({ onClick }: { onClick: (header: string) => void}){
   return (
     <tr>
-      <th style={{width: "2%"}}>
+      <th style={{width: "2%"}} onClick={() => onClick("status")}>
         Status
       </th>
       <th style={{width: "20%"}}>
@@ -12,13 +12,13 @@ function TableHeader(){
       <th style={{width: "15%"}}>
         Description
       </th>
-      <th style={{width: "10%"}}>
+      <th style={{width: "10%"}} onClick={() => onClick("dueDate")}>
         Due Date
       </th>
-      <th style={{width: "10%"}}>
+      <th style={{width: "10%"}} onClick={() => onClick("priority")}>
         Priority
       </th>
-      <th style={{width: "15%"}}>
+      <th style={{width: "15%"}} onClick={() => onClick("labels")}>
         Labels
       </th>
       <th style={{width: "5%"}}>
