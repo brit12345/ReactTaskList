@@ -1,32 +1,40 @@
 import { ChangeEvent, useContext, useState } from "react";
 import Task from "../data/dataInterfaces";
 import { MyContext } from "./MyContext";
-import DeleteButton from "./DeleteButton";
+import { randomUUID } from "crypto";
 
-function Edit(){
+function Add(){
   const { tasks, setTasks, detailID } = useContext(MyContext);
   const editMode = detailID !== null ? true : false;
+  const task = {
+    id: crypto.randomUUID(),
+    title: "",
+    desc: "",
+    completed: false,
+    dueDate: "",
+    priority: "",
+    labels: [],
+    reminder: ""
+  }
 
-  const task = tasks.filter(task => task.id === detailID)[0];
-  
   const [formInputs, setFormInputs] = useState(task);
-  //ok SO
-  //first, i need to grab the detail number
-  //then i need to either get the corresponding task, or if its null, dont prefill fields
 
-  //maybe i should have a state specifically for the form. if they save it all, it gets put in
-  //need to get all the tasks and find the unique labels to offer as dropdown? dropdown/autofill. idk how to do that
-
-  //i also have to somehow make sure that i dont allow users to reuse colours. that could get confusing.
-  //so i need to let them choose a colour or randomly choose one, and make sure the already used ones are not an option.
-
-  //onkeypress and enter for button
 
   function handleChange(e: ChangeEvent<HTMLInputElement>, property: string) {
     let tempTask = {
       ...task,
       [property]: e.target.value
     }
+    console.log(e.target.value);
+    setFormInputs(tempTask);
+  }
+
+  function handleSelectChange(e: ChangeEvent<HTMLSelectElement>, property: string) {
+    let tempTask = {
+      ...task,
+      [property]: e.target.value
+    }
+    console.log(e.target.value);
     setFormInputs(tempTask);
   }
 
@@ -43,22 +51,22 @@ function Edit(){
     <form>
       <div className="fullWidth">
         <label htmlFor="title">Title</label>
-        <input type="text" className="nextLine" id="title"/>
+        <input type="text" className="nextLine" id="title" onChange={(e: ChangeEvent<HTMLInputElement>) => {handleChange(e, "title")}}/>
       </div>
      
       <div className="fullWidth">
         <label htmlFor="desc">Description</label>
-        <input type="text" className="nextLine" id="desc"/>
+        <input type="text" className="nextLine" id="desc" onChange={(e: ChangeEvent<HTMLInputElement>) => {handleChange(e, "title")}}/>
       </div>
 
       <div className="inputSpacing">
         <label htmlFor="dueDate">Due Date</label>
-        <input type="datetime-local" id="dueDate"/>
+        <input type="datetime-local" id="dueDate" onChange={(e: ChangeEvent<HTMLInputElement>) => {handleChange(e, "title")}}/>
       </div>
     
       <div className="inputSpacing">
         <label htmlFor="priority">Priority</label>
-        <select id="priority">
+        <select id="priority" onChange={(e: ChangeEvent<HTMLSelectElement>) => {handleSelectChange(e, "title")}}>
           <option value="1">Very Low</option>
           <option value="2">Low</option>
           <option value="3">Medium</option>
@@ -69,20 +77,14 @@ function Edit(){
 
       <div className="inputSpacing">
         <label>Label</label>
-        <input type="text" list="labels"></input>
+        <input type="text" list="labels" onChange={(e: ChangeEvent<HTMLInputElement>) => {handleChange(e, "title")}}></input>
         <datalist id="labels">
           {getUniqueLabels(tasks).map(label => <option key={label}>{label}</option> )}
         </datalist>
       </div>
 
-      {editMode && <div>
-          <label htmlFor="completed">Completed</label>
-          <input type="checkbox" id="completed"/>
-        </div>
-      }
       <div id="formButtons">
         <div>
-          {editMode && <DeleteButton taskID={detailID}></DeleteButton>}
         </div>
         <div>
           <button>cancel</button>
@@ -94,7 +96,7 @@ function Edit(){
   )
 }
 
-export default Edit;
+export default Add;
 
 /*<input type="text" list="cars" />
 <datalist id="cars">

@@ -2,7 +2,7 @@ import { MouseEvent, useContext } from "react";
 import { MyContext } from "./MyContext";
 import { pages } from "../data/pages";
 
-function EditButton({ taskID } : { taskID: number }){
+function EditButton({ taskID } : { taskID: string }){
   const { setCurrentPage, setDetailID } = useContext(MyContext);
 
   function onClick(e: MouseEvent<HTMLButtonElement>) {

@@ -11,7 +11,7 @@ function TableRow({ task }: { task: Task }){
   //need to pass down the page state changing function
   const { setTasks, currentPage, setCurrentPage, setDetailID } = useContext(MyContext);
 
-  function changeToDetail(taskID: number): void{
+  function changeToDetail(taskID: string): void{
     setDetailID(taskID);
     setCurrentPage(pages.detail);
   }

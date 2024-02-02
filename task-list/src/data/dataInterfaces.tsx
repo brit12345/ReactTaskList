@@ -1,5 +1,5 @@
 export default interface Task {
-  id: number,
+  id: string,
   title: string,
   desc: string,
   completed: boolean,
@@ -10,7 +10,7 @@ export default interface Task {
 }
 
 export interface Label {
-  id: number,
+  id: string,
   name: string,
   colour: string
 }

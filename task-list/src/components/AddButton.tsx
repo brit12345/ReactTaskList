@@ -4,10 +4,9 @@ import { pages } from "../data/pages";
 
 
 function AddButton(){
-  const { setCurrentPage, setDetailID } = useContext(MyContext);
+  const { setCurrentPage } = useContext(MyContext);
   function onClick(): void {
-    setCurrentPage(pages.edit);
-    setDetailID(null);
+    setCurrentPage(pages.add);
   }
 
   return (

@@ -8,6 +8,7 @@ import Detail from "./Detail";
 import { pages } from "../data/pages";
 import { MyContext } from "./MyContext";
 import Edit from "./Edit";
+import Add from "./Add";
 
 function Body(){
   const { currentPage } = useContext(MyContext);
@@ -17,6 +18,7 @@ function Body(){
       {currentPage === pages.table && <Table></Table>}
       {currentPage === pages.detail && <Detail></Detail>}
       {currentPage === pages.edit && <Edit></Edit>}
+      {currentPage === pages.add && <Add></Add>}
     </>
 
   )

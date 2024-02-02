@@ -100,6 +100,7 @@ form {
   justify-content: space-between;
   align-items:flex-start;
   align-items: stretch;
+  gap: 20px;
 
   width: 60%;
   margin-left: auto;
@@ -114,3 +115,11 @@ form .nextLine {
   width: 100%;
 }
 
+#formButtons {
+  display: flex;
+  justify-content: space-between;
+}
+
+form .inputSpacing label{
+  display: block;
+}
