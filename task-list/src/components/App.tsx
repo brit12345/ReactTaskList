@@ -5,6 +5,8 @@ import Task from '../data/dataInterfaces';
 import Header from './Header';
 import Footer from './Footer';
 import Body from './Body';
+import { MyContext } from './MyContext';
+import { pages } from '../data/pages';
 
 function App() {
   //Retrieve data from local storage. if none, then set the tasks list as the test data
@@ -14,6 +16,8 @@ function App() {
     tempTasks = JSON.parse(retrievedLocal)
   } 
   const [tasks, setTasks] = useState(tempTasks);
+  const [currentPage, setCurrentPage] = useState(pages.table);
+  const [detailID, setDetailID] = useState(0);
 
   //saves the tasks after the component finishes updating
   useEffect(() => {
@@ -22,9 +26,12 @@ function App() {
 
   return (
     <div className="App">
-      <Header></Header>
-      <Body tasks={tasks}></Body>
-      <Footer></Footer>
+      <MyContext.Provider value={{ tasks, setTasks, currentPage, setCurrentPage, detailID, setDetailID}}>
+        <Header></Header>
+        <Body></Body>
+        <Footer></Footer>
+      </MyContext.Provider>
+      
     </div>
   );
 }

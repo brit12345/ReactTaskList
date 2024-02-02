@@ -1,5 +1,6 @@
 
 function Detail(){
+  
   return <></>
 }
 

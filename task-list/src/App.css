@@ -75,3 +75,19 @@ table td {
   overflow: hidden;
 
 }
+
+/* buttons styling */
+.buttons {
+  display: flex;
+  justify-content: space-between;
+}
+.buttons button {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+.buttons button:hover {
+  cursor: pointer;
+}

@@ -1,13 +1,24 @@
+import { useContext } from "react";
 import Task from "../data/dataInterfaces";
+import DeleteButton from "./DeleteButton";
 import LabelComponent from "./Label";
 import Priority from "./Priority";
+import { MyContext } from "./MyContext";
+import { pages } from "../data/pages";
 
-function TableRow({ task, changeToDetail }: { task: Task, changeToDetail: (taskID: number) => void}){
+function TableRow({ task }: { task: Task }){
   //need to pass down the page state changing function
+  const { setTasks, currentPage, setCurrentPage, setDetailID } = useContext(MyContext);
+
+  function changeToDetail(taskID: number): void{
+    setDetailID(taskID);
+    setCurrentPage(pages.detail);
+  }
+  //MOVE THE BUTTONS TO THIER OWN COMPONENTS BC REUISNG LATER
   return (
     <tr onClick={() => changeToDetail(task.id)}>
       <td>
-        {task.completed && <img src="checkmark-circle-outline.svg" style={{width: 20, height: 20}}/>}
+        {task.completed && <img src="checkmark-circle-outline.svg" alt="completed" style={{width: 20, height: 20}}/>}
       </td>
       <td>{task.title}</td>
       <td><div className="desc">{task.desc}</div></td>
@@ -19,15 +30,19 @@ function TableRow({ task, changeToDetail }: { task: Task, changeToDetail: (taskI
         )
       })}</td>
       <td>
-        <button>
-          Delete
-        </button>
-        <button>
-          Edit
-        </button>
+        <div className="buttons">
+          <DeleteButton taskID={task.id}></DeleteButton>
+          <button>
+            <img src="create.svg" alt="edit" style={{width: 20, height: 20}}/>
+          </button>
+        </div>
       </td>
     </tr>
   )
 }
 
 export default TableRow;
+
+//to delete i need:
+//the id of the task, where i return the filter of everything except what i did. then i can set the state as that.
+//so i need the state and the taskid
