@@ -1,8 +1,9 @@
 import { MouseEvent, useContext } from "react";
 import { MyContext } from "./MyContext";
+import { pages } from "../data/pages";
 
 function DeleteButton( { taskID } : {taskID: string | null }){
-  const { tasks, setTasks } = useContext(MyContext);
+  const { tasks, setTasks, setCurrentPage } = useContext(MyContext);
 
   function onClick(e: MouseEvent<HTMLButtonElement>) {
     let excluded = tasks.filter(task => {
@@ -12,6 +13,7 @@ function DeleteButton( { taskID } : {taskID: string | null }){
     });
     e.stopPropagation(); //Prevents table row from registering being clicked
     setTasks(excluded);
+    setCurrentPage(pages.table);
   }
 
   return (

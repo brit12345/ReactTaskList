@@ -1,31 +1,30 @@
-import { ChangeEvent, useContext, useState } from "react";
+import { ChangeEvent, FormEvent, useContext, useState } from "react";
 import Task from "../data/dataInterfaces";
 import { MyContext } from "./MyContext";
-import DeleteButton from "./DeleteButton";
 import CancelButton from "./CancelButton";
+import SaveButton from "./SaveButton";
+import { pages } from "../data/pages";
+import DeleteButton from "./DeleteButton";
 
 function Edit(){
-  const { tasks, setTasks, detailID } = useContext(MyContext);
-  const editMode = detailID !== null ? true : false;
+  const { tasks, setTasks, detailID, setCurrentPage } = useContext(MyContext);
 
-  const task = tasks.filter(task => task.id === detailID)[0];
+  const focusTask = tasks.filter(task => task.id === detailID)[0];
   
-  const [formInputs, setFormInputs] = useState(task);
-  //ok SO
-  //first, i need to grab the detail number
-  //then i need to either get the corresponding task, or if its null, dont prefill fields
+  const [formInputs, setFormInputs] = useState(focusTask);
 
-  //maybe i should have a state specifically for the form. if they save it all, it gets put in
-  //need to get all the tasks and find the unique labels to offer as dropdown? dropdown/autofill. idk how to do that
-
-  //i also have to somehow make sure that i dont allow users to reuse colours. that could get confusing.
-  //so i need to let them choose a colour or randomly choose one, and make sure the already used ones are not an option.
-
-  //onkeypress and enter for button
 
   function handleChange(e: ChangeEvent<HTMLInputElement>, property: string) {
     let tempTask = {
-      ...task,
+      ...formInputs,
+      [property]: e.target.value
+    }
+    setFormInputs(tempTask);
+  }
+
+  function handleSelectChange(e: ChangeEvent<HTMLSelectElement>, property: string) {
+    let tempTask = {
+      ...formInputs,
       [property]: e.target.value
     }
     setFormInputs(tempTask);
@@ -40,26 +39,43 @@ function Edit(){
     return [...new Set(labels)];
   }
 
+  function handleSubmit(e: FormEvent<HTMLFormElement>): void {
+    //to submit, i need to save it to the end of the tasks state
+    e.preventDefault();
+
+    const taskList: Array<Task> = tasks.map(task => {
+      if(task.id === formInputs.id){
+        return formInputs;
+      } else {
+        return task;
+      }
+    });
+
+    setTasks(taskList);
+    setCurrentPage(pages.table);
+
+  }
+
   return (
-    <form>
+    <form onSubmit={handleSubmit}>
       <div className="fullWidth">
         <label htmlFor="title">Title</label>
-        <input type="text" className="nextLine" id="title"/>
+        <input type="text" className="nextLine" id="title" value={formInputs.title} onChange={(e: ChangeEvent<HTMLInputElement>) => {handleChange(e, "title")}}/>
       </div>
      
       <div className="fullWidth">
         <label htmlFor="desc">Description</label>
-        <input type="text" className="nextLine" id="desc"/>
+        <input type="text" className="nextLine" id="desc" value={formInputs.desc} onChange={(e: ChangeEvent<HTMLInputElement>) => {handleChange(e, "desc")}}/>
       </div>
 
       <div className="inputSpacing">
         <label htmlFor="dueDate">Due Date</label>
-        <input type="datetime-local" id="dueDate"/>
+        <input type="datetime-local" id="dueDate" defaultValue={formInputs.dueDate} onChange={(e: ChangeEvent<HTMLInputElement>) => {handleChange(e, "dueDate")}}/>
       </div>
     
       <div className="inputSpacing">
         <label htmlFor="priority">Priority</label>
-        <select id="priority">
+        <select id="priority" value={formInputs.priority} onChange={(e: ChangeEvent<HTMLSelectElement>) => {handleSelectChange(e, "priority")}}>
           <option value="1">Very Low</option>
           <option value="2">Low</option>
           <option value="3">Medium</option>
@@ -68,26 +84,21 @@ function Edit(){
         </select>
       </div>
 
-      <div className="inputSpacing">
+      {/* <div className="inputSpacing">
         <label>Label</label>
-        <input type="text" list="labels"></input>
+        <input type="text" list="labels" value={formInputs.labels} onChange={(e: ChangeEvent<HTMLInputElement>) => {handleChange(e, "labels")}}></input>
         <datalist id="labels">
-          {getUniqueLabels(tasks).map(label => <option key={label}>{label}</option> )}
+          {getUniqueLabels(tasks).map(label => <option key={label} value={label}>{label}</option> )}
         </datalist>
-      </div>
+      </div> */}
 
-      {editMode && <div>
-          <label htmlFor="completed">Completed</label>
-          <input type="checkbox" id="completed"/>
-        </div>
-      }
       <div id="formButtons">
         <div>
-          {editMode && <DeleteButton taskID={detailID}></DeleteButton>}
+          <DeleteButton taskID={detailID}></DeleteButton>
         </div>
         <div>
           <CancelButton></CancelButton>
-          <button>save</button>
+          <SaveButton></SaveButton>
         </div>
       </div>
       
@@ -96,6 +107,8 @@ function Edit(){
 }
 
 export default Edit;
+
+
 
 /*<input type="text" list="cars" />
 <datalist id="cars">
