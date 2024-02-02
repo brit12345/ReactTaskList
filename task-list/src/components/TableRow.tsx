@@ -42,7 +42,3 @@ function TableRow({ task }: { task: Task }){
 }
 
 export default TableRow;
-
-//to delete i need:
-//the id of the task, where i return the filter of everything except what i did. then i can set the state as that.
-//so i need the state and the taskid
