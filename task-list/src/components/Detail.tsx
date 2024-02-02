@@ -1,7 +1,6 @@
-import { ChangeEvent, useContext } from "react";
+import { ChangeEvent, useContext, useState } from "react";
 import { MyContext } from "./MyContext";
 import LabelComponent from "./Label";
-import Priority from "./Priority";
 import DeleteButton from "./DeleteButton";
 import CancelButton from "./CancelButton";
 import Task from "../data/dataInterfaces";
@@ -9,22 +8,25 @@ import { priorityWords } from "../data/priorityWords";
 
 function Detail(){
   const { tasks, detailID, setTasks } = useContext(MyContext);
-  const focusTask = tasks.filter(task => task.id === detailID)[0];
+  const [focusTask, setFocusTask] = useState(tasks.filter(task => task.id === detailID)[0]);
 
-  function handleCheckboxChange(e: ChangeEvent<HTMLInputElement>, property: string) {
-    let tempTask = {
+  function handleCheckboxChange(e: ChangeEvent<HTMLInputElement>) {
+
+    setFocusTask({ //update the focus for the detail page
       ...focusTask,
-      [property]: e.target.checked
-    }
+      completed: e.target.checked
+    });
 
     const taskList: Array<Task> = tasks.map(task => {
-      if(task.id === tempTask.id){
-        return tempTask;
+      if(task.id === focusTask.id){
+        return { //setFocusTask won't be updated by here, so insert the new change
+          ...focusTask,
+          completed: e.target.checked
+        };
       } else {
         return task;
       }
     });
-    e.preventDefault();
 
     setTasks(taskList);
   }
@@ -66,7 +68,7 @@ function Detail(){
 
       <div>
         <label htmlFor="completed">Completed</label>
-        <input type="checkbox" id="completed" checked={focusTask.completed} onChange={(e: ChangeEvent<HTMLInputElement>) => {handleCheckboxChange(e, "completed")}}/>
+        <input type="checkbox" id="completed" checked={focusTask.completed} onChange={(e: ChangeEvent<HTMLInputElement>) => {handleCheckboxChange(e)}}/>
       </div>
 
       <div id="formButtons">
@@ -78,8 +80,6 @@ function Detail(){
         </div>
       </div>
     </div>
-
-  
   );
 }
 
