@@ -7,8 +7,8 @@ interface AppContextInterface {
   setTasks: Dispatch<SetStateAction<Task[]>>;
   currentPage: string;
   setCurrentPage: React.Dispatch<React.SetStateAction<string>>;
-  detailID: number;
-  setDetailID: React.Dispatch<React.SetStateAction<number>>;
+  detailID: number | null;
+  setDetailID: React.Dispatch<React.SetStateAction<number | null>>;
 }
 
 export const MyContext = createContext<AppContextInterface>({

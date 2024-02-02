@@ -1,3 +1,4 @@
+import AddButton from "./AddButton";
 
 function TableHeader(){
   return (
@@ -21,7 +22,7 @@ function TableHeader(){
         Labels
       </th>
       <th style={{width: "5%"}}>
-        (+)
+        <AddButton></AddButton>
       </th>
     </tr>
   );

@@ -3,7 +3,7 @@ import { MyContext } from "./MyContext";
 import { pages } from "../data/pages";
 
 function EditButton({ taskID } : { taskID: number }){
-  const { currentPage, setCurrentPage, setDetailID } = useContext(MyContext);
+  const { setCurrentPage, setDetailID } = useContext(MyContext);
 
   function onClick(e: MouseEvent<HTMLButtonElement>) {
     e.stopPropagation(); //Prevents table row from registering being clicked
