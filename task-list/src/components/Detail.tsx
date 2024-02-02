@@ -67,7 +67,7 @@ function Detail(){
         <h3>Labels</h3>
         {focusTask.labels.map(label => {
         return (
-          <LabelComponent label={label} key={label.id}></LabelComponent>
+          <LabelComponent label={label} key={label.id} editMode={false}  onClick={undefined}></LabelComponent>
         )
       })}</div>
 

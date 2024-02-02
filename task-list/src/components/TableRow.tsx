@@ -27,7 +27,7 @@ function TableRow({ task, alteredTasks, setAlteredTasks }: { task: Task, altered
       <Priority priority={task.priority}></Priority>
       <td className="labelContainer">{task.labels.map(label => {
         return (
-          <LabelComponent label={label} key={label.id}></LabelComponent>
+          <LabelComponent label={label} key={label.id} editMode={false} onClick={undefined}></LabelComponent>
         )
       })}</td>
       <td>

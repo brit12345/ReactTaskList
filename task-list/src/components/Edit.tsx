@@ -6,6 +6,7 @@ import SaveButton from "./SaveButton";
 import { pages } from "../data/pages";
 import DeleteButton from "./DeleteButton";
 import LabelComponent from "./Label";
+import { labelColours } from "../data/labelColours";
 
 function Edit(){
   const { tasks, setTasks, detailID, setCurrentPage } = useContext(MyContext);
@@ -16,7 +17,9 @@ function Edit(){
 
   const [labelInput, setLabelInput] = useState("");
 
-  const [labels, setLabels] = useState<Array<Label>>([]);
+  const [labels, setLabels] = useState<Array<Label>>(focusTask.labels);
+
+  const [colour, setColour] = useState("");
 
   function handleChange(e: ChangeEvent<HTMLInputElement>, property: string) {
     let tempTask = {
@@ -74,12 +77,37 @@ function Edit(){
       {
         id: crypto.randomUUID(),
         name: labelInput, //set it as whats currently in the input
-        colour: "red" //RED FOR NOW
+        colour: colour
       }
     ]
     //somehow have to also get the colour
 
     setLabels(tempLabels);
+  }
+
+  function handleLabelDelete(e: MouseEvent<HTMLButtonElement>){
+    e.preventDefault();
+    const labelName = e.currentTarget.previousElementSibling?.textContent;
+    let tempLabels = labels.filter(label => {
+      if(label.name !== labelName){
+        return label; //only return labels that aren't being deleted
+      }
+    });
+
+    setLabels(tempLabels);
+  }
+
+  function handleColourChange(e: ChangeEvent<HTMLSelectElement>) {
+    setColour(e.target.value);
+  }
+
+  function getColourOptions(): Array<React.ReactNode>{
+    let options = [];
+    for(const k in labelColours){
+      const val = labelColours[k as keyof typeof labelColours];
+      options.push(<option key={val} value={k}>{k[0].toUpperCase() + k.slice(1)}</option>);
+    }
+    return options;
   }
 
   return (
@@ -117,11 +145,17 @@ function Edit(){
 
       <div className="inputSpacing">
         <label>Labels</label>
-        {labels.map(label => <LabelComponent label={label}></LabelComponent>)}
+        {labels.map(label => <LabelComponent key={label.id} label={label} editMode={true}  onClick={handleLabelDelete}></LabelComponent>)}
         <input type="text" list="labels" value={labelInput} onChange={(e: ChangeEvent<HTMLInputElement>) => {handleLabelChange(e)}}></input>
         <datalist id="labels">
           {getUniqueLabels(tasks).map(label => <option key={label} value={label}>{label}</option> )}
         </datalist>
+        <div>
+          <label>Colour</label>
+            <select id="labels" onChange={(e: ChangeEvent<HTMLSelectElement>) => {handleColourChange(e)}}>
+              {getColourOptions()}
+            </select>
+        </div>
         <button className="saveButton addButton" onClick={handleAddClick}>Add</button>
       </div>
 
